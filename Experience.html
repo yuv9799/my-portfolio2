@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Experience — Yuvraj Anand</title>
+
+  <!-- Embedded CSS (self-contained) -->
+  <style>
+  /* ---------- variables ---------- */
+  :root{
+    --bg-top:#07151a;
+    --bg-bottom:#072b30;
+    --page-max:1200px;
+    --card-bg: rgba(255,255,255,0.03);
+    --card-border: rgba(255,255,255,0.02);
+    --text:#e9f6fb;
+    --muted: rgba(233,246,251,0.6);
+    --accent-a:#cfe9ff;
+    --accent-b:#9bbfff;
+    --accent-c:#50d0ff;
+    --card-radius:14px;
+    --gap:24px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(800px 400px at 10% 10%, rgba(82,160,180,0.035), transparent 10%),
+      linear-gradient(180deg,var(--bg-top) 0%, var(--bg-bottom) 100%);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.5;
+    overflow-x:hidden;
+    padding-bottom:40px;
+  }
+
+  /* bubbles */
+  .bubbles{ position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden; }
+  .bubbles span{
+    position:absolute; bottom:-140px; border-radius:50%;
+    background: radial-gradient(circle at 30% 30%, rgba(0,210,255,0.12), rgba(0,110,255,0.02));
+    box-shadow: 0 8px 40px rgba(6,100,120,0.06);
+    opacity:.55; animation:rise linear infinite; will-change:transform,opacity;
+  }
+  @keyframes rise{ 0%{transform:translateY(0) scale(.9);opacity:.5}70%{opacity:.25}100%{transform:translateY(-120vh) scale(1.4);opacity:0} }
+  .bubbles span:nth-child(1){ left:6%; width:60px;height:60px; animation-duration:12s; animation-delay:0s; }
+  .bubbles span:nth-child(2){ left:18%; width:40px;height:40px; animation-duration:9s; animation-delay:1.2s; }
+  .bubbles span:nth-child(3){ left:36%; width:30px;height:30px; animation-duration:7.5s; animation-delay:.6s; }
+  .bubbles span:nth-child(4){ left:52%; width:80px;height:80px; animation-duration:13s; animation-delay:2s; }
+  .bubbles span:nth-child(5){ left:76%; width:36px;height:36px; animation-duration:10s; animation-delay:1s; }
+
+  /* topbar */
+  .topbar{ position:sticky; top:0; z-index:60; background: linear-gradient(180deg, rgba(2,10,14,0.6), rgba(2,10,14,0.18)); backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,0.01); }
+  .topbar-inner{ max-width: var(--page-max); margin:0 auto; display:flex; align-items:center; gap:18px; padding:12px 24px; justify-content:space-between; }
+  .logo-square{ width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:900; background: linear-gradient(180deg,#38efff,#0088ff); color:#02111a; box-shadow:0 10px 30px rgba(0,120,255,0.12); font-size:20px; }
+
+  .main-nav{ display:flex; gap:12px; align-items:center; margin-left:auto; }
+  .nav-item{ padding:10px 16px; border-radius:12px; color:var(--muted); text-decoration:none; font-weight:700; font-size:15px; background:transparent; transition:all .14s ease; }
+  .nav-item:hover{ background: rgba(255,255,255,0.03); color:var(--text); transform: translateY(-2px); box-shadow:0 12px 36px rgba(0,0,0,0.45); }
+  .nav-item.active{ background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); color:var(--text); box-shadow: 0 18px 44px rgba(0,0,0,0.5), inset 0 -6px 12px rgba(0,110,255,0.03); }
+  .nav-item.resume{ border:1px solid rgba(255,255,255,0.04); }
+
+  @media (max-width:780px){
+    .topbar-inner{ padding:10px 14px; gap:12px; }
+    .nav-item{ padding:8px 10px; font-size:14px; }
+    .logo-square{ width:40px; height:40px; font-size:16px; }
+  }
+
+  /* main layout */
+  .experience-main{ max-width:1100px; margin:32px auto; padding:24px; padding-top:26px; }
+  .experience-inner{ display:grid; grid-template-columns: 1fr; gap:20px; }
+
+  .hero-title{ font-size:40px; font-weight:900; margin:6px 0 12px; color:var(--text); display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .hero-name{
+    display:inline-block; font-size:40px; font-weight:900;
+    background: linear-gradient(180deg,#e8f3ff,#c9e5ff 45%, #9dbfff 100%); -webkit-background-clip:text; color:transparent;
+    text-shadow: 0 2px 0 rgba(255,255,255,0.9), 3px 3px 0 #cfe9ff, 6px 6px 0 #9bbfff, 9px 9px 0 #6a96ff, 12px 12px 16px rgba(0,0,0,0.55);
+    transform: translateY(6px) scale(.92); opacity:0; transition: transform 420ms cubic-bezier(.2,.9,.2,1), opacity 420ms ease;
+  }
+  .hero-name.pop{ transform: translateY(0) scale(1); opacity:1; }
+
+  .hero-sub{ color:var(--muted); font-size:15px; margin:6px 0 18px; max-width:70ch; }
+
+  /* summary + role */
+  .summary-card{ display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap; }
+  .summary-left{ flex:1 1 560px; }
+  .summary-right{ width:320px; }
+
+  .card{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:var(--card-radius); border:1px solid rgba(255,255,255,0.03); box-shadow: 0 16px 36px rgba(0,0,0,0.45); }
+
+  .role{ font-weight:800; color:var(--accent-a); margin-bottom:8px; }
+  .muted{ color:var(--muted); }
+
+  /* skills grid */
+  .skills-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:14px; margin-top:6px; }
+  .skill-pill{ display:flex; flex-direction:column; gap:8px; padding:12px; border-radius:12px; background: rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.02); }
+  .skill-pill .label{ font-weight:700; color:var(--text); }
+  .skill-pill .progress{ height:10px; background: rgba(255,255,255,0.02); border-radius:999px; overflow:hidden; }
+  .skill-pill .progress > span{ display:block; height:100%; background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); box-shadow:0 6px 18px rgba(107,143,255,0.08); }
+
+  /* projects/roles list */
+  .work-list{ margin-top:8px; display:flex; flex-direction:column; gap:12px; }
+  .work-item{ display:flex; gap:12px; align-items:flex-start; padding:12px; border-radius:10px; background: rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.02); }
+  .work-meta{ min-width:120px; color:var(--muted); font-weight:700; }
+  .work-desc{ color: rgba(234,246,251,0.95); }
+
+  /* tech stack */
+  .stack-grid{ display:grid; grid-template-columns: repeat(4,1fr); gap:10px; margin-top:10px; }
+  .stack-grid .tool{ padding:10px; border-radius:10px; background: rgba(255,255,255,0.02); text-align:center; font-weight:700; color:var(--muted); }
+
+  /* certifications & learning */
+  .certs{ display:flex; gap:12px; flex-wrap:wrap; margin-top:10px; }
+  .cert{ padding:10px 12px; border-radius:10px; background: rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.02); font-weight:700; color:var(--muted); }
+
+  /* CTA */
+  .exp-cta{ display:flex; gap:12px; align-items:center; justify-content:space-between; margin-top:12px; }
+  .exp-cta .left{ max-width:70%; }
+  .cta-row{ display:flex; gap:12px; margin-top:8px; }
+
+  /* small util */
+  .muted-small{ color:var(--muted); font-size:13px; }
+
+  /* responsive */
+  @media (max-width:920px){
+    .summary-card{ flex-direction:column; }
+    .summary-right{ width:auto; }
+    .skills-grid{ grid-template-columns: 1fr; }
+    .stack-grid{ grid-template-columns: repeat(2,1fr); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .bubbles span, .hero-name{ animation:none!important; transition:none!important; transform:none!important; opacity:1!important; }
+  }
+  </style>
+</head>
+<body>
+  <!-- bubbles -->
+  <div class="bubbles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- topbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo-square">Y</div>
+
+      <nav class="main-nav" role="navigation" aria-label="Primary">
+        <a class="nav-item" href="index.html">Home</a>
+        <a class="nav-item" href="about.html">About</a>
+        <a class="nav-item" href="experience.html">Experience</a>
+        <a class="nav-item" href="projects.html">Projects</a>
+        <a class="nav-item" href="contact.html">Contact</a>
+        <a class="nav-item resume" href="resume.html">Resume</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- main -->
+  <main class="experience-main" role="main">
+    <div class="experience-inner">
+
+      <!-- hero / summary -->
+      <section class="card summary-card">
+        <div class="summary-left">
+          <h1 class="hero-title">Experience<span id="hero-name" class="hero-name"></span></h1>
+          <p class="hero-sub">Intermediate front-end developer with hands-on experience building responsive user interfaces, small single-page apps, and interactive components. Comfortable with HTML/CSS, JavaScript and basic React workflows; focused on performance, accessibility and clean UI.</p>
+
+          <div style="margin-top:10px;">
+            <div class="role">Current focus</div>
+            <div class="muted-small">Building reusable UI components, improving JS fundamentals & learning accessible forms.</div>
+          </div>
+        </div>
+
+        <aside class="summary-right card">
+          <div style="text-align:left;">
+            <div style="font-weight:900; font-size:18px; margin-bottom:6px;">Quick stats</div>
+            <div class="muted-small">10+ mini projects</div>
+            <div class="muted-small">3 UI templates</div>
+            <div class="muted-small">Active: freelance / part-time</div>
+          </div>
+        </aside>
+      </section>
+
+      <!-- skills & stack -->
+      <section class="card">
+        <h3 style="margin:0 0 10px 0; color:var(--text);">Core Skills</h3>
+
+        <div class="skills-grid">
+          <div class="skill-pill">
+            <div class="label">HTML & Semantic Markup</div>
+            <div class="progress"><span style="width:95%"></span></div>
+            <div class="muted-small">Accessible structure, SEO-friendly markup.</div>
+          </div>
+
+          <div class="skill-pill">
+            <div class="label">CSS (Layout & Animations)</div>
+            <div class="progress"><span style="width:90%"></span></div>
+            <div class="muted-small">Flexbox, Grid, responsive, micro-interactions.</div>
+          </div>
+
+          <div class="skill-pill">
+            <div class="label">JavaScript (vanilla)</div>
+            <div class="progress"><span style="width:80%"></span></div>
+            <div class="muted-small">DOM, events, fetch, promises, ES6+.</div>
+          </div>
+
+          <div class="skill-pill">
+            <div class="label">React (basic)</div>
+            <div class="progress"><span style="width:65%"></span></div>
+            <div class="muted-small">Components, props, state, basic hooks.</div>
+          </div>
+        </div>
+
+        <div style="margin-top:14px;">
+          <div style="font-weight:800; margin-bottom:8px;">Tech stack</div>
+          <div class="stack-grid">
+            <div class="tool">HTML</div><div class="tool">CSS</div><div class="tool">JavaScript</div><div class="tool">React</div>
+            <div class="tool">Figma</div><div class="tool">Git</div><div class="tool">VSCode</div><div class="tool">Chrome DevTools</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- professional timeline / roles -->
+      <section class="card">
+        <h3 style="margin:0 0 10px 0; color:var(--text);">Professional Experience & Roles</h3>
+
+        <div class="work-list">
+          <div class="work-item">
+            <div class="work-meta">2025 — present</div>
+            <div class="work-desc">
+              <strong>Frontend Developer</strong>
+              <div class="muted-small">Building responsive landing pages, small JS utilities (calculator, timer), and reusable UI components. Focus on performance, accessible forms and cross-browser compatibility.</div>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-meta">2024 — 2025</div>
+            <div class="work-desc">
+              <strong>UI Project Builder — Personal</strong>
+              <div class="muted-small">Created 10+ mini-projects (to-do app, photo gallery with lightbox, e-commerce mock UI). Experimented with CSS animations, grid layouts and progressive enhancement.</div>
+            </div>
+          </div>
+
+          <div class="work-item">
+            <div class="work-meta">2023 — 2024</div>
+            <div class="work-desc">
+              <strong>Learner</strong>
+              <div class="muted-small">Completed structured learning in HTML/CSS; started JavaScript essentials and built first small interactive apps.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- certifications & learning -->
+      <section class="card">
+        <h3 style="margin:0 0 10px 0; color:var(--text);">Certifications & Learning</h3>
+        <div class="certs">
+          <div class="cert">Responsive Web Design (self)</div>
+          <div class="cert">JavaScript Fundamentals</div>
+          <div class="cert">Intro to React</div>
+          <div class="cert">Accessibility basics</div>
+        </div>
+
+        <div style="margin-top:12px;">
+          <div style="font-weight:800; margin-bottom:6px;">Learning Roadmap</div>
+          <ul class="muted-small" style="padding-left:18px; margin:6px 0;">
+            <li>Advanced JavaScript (closures, scopes, prototypes)</li>
+            <li>React hooks & state management</li>
+            <li>Performance optimization & Lighthouse</li>
+            <li>Accessible forms & ARIA patterns</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="card about-cta">
+        <div class="exp-cta">
+          <div class="left">
+            <h3 style="margin:0 0 6px 0; color:var(--text);">Want to collaborate?</h3>
+            <div class="muted-small">Open to freelance & small contract work. I enjoy turning UX concepts into fast, usable interfaces.</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end;">
+            <div class="cta-row">
+              <a class="btn primary" href="contact.html">Contact Me</a>
+              <a class="btn ghost" href="resume.html">View Resume</a>
+            </div>
+            <div class="muted-small">Email: <a style="color:var(--accent-c); text-decoration:none;" href="mailto:yuvrajanand9799@gmail.com">yuvrajanand9799@gmail.com</a></div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="page-footer" style="text-align:center; margin:36px 0; color:rgba(234,246,251,0.6);">© 2025 Yuvraj Anand</footer>
+
+  <!-- JS: set active nav & name pop -->
+  <script>
+    (function(){
+      const path = location.pathname.split('/').pop() || 'index.html';
+      const nav = document.querySelectorAll('.main-nav .nav-item');
+      nav.forEach(a=>{
+        const href = a.getAttribute('href');
+        if(!href) return;
+        if(href === path || (href === 'index.html' && path === '')) a.classList.add('active');
+        else a.classList.remove('active');
+      });
+
+      const name = document.getElementById('hero-name');
+      if(name) setTimeout(()=> name.classList.add('pop'), 650);
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Contact — Yuvraj Anand</title>
+  <style>
+  /* ---------- variables ---------- */
+  :root{
+    --bg-top:#07151a; --bg-bottom:#072b30;
+    --page-max:1200px;
+    --card-bg: rgba(255,255,255,0.03);
+    --card-border: rgba(255,255,255,0.02);
+    --text:#e9f6fb;
+    --muted: rgba(233,246,251,0.6);
+    --accent-a:#cfe9ff; --accent-b:#9bbfff; --accent-c:#50d0ff;
+    --card-radius:14px; --gap:20px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(800px 400px at 10% 10%, rgba(82,160,180,0.035), transparent 10%),
+      linear-gradient(180deg,var(--bg-top) 0%, var(--bg-bottom) 100%);
+    color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    line-height:1.5; overflow-x:hidden; padding-bottom:40px;
+  }
+
+  /* bubbles */
+  .bubbles{ position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden; }
+  .bubbles span{ position:absolute; bottom:-140px; border-radius:50%; background: radial-gradient(circle at 30% 30%, rgba(0,210,255,0.12), rgba(0,110,255,0.02)); box-shadow: 0 8px 40px rgba(6,100,120,0.06); opacity:.55; animation:rise linear infinite; will-change:transform,opacity; }
+  @keyframes rise{ 0%{transform:translateY(0) scale(.9);opacity:.5}70%{opacity:.25}100%{transform:translateY(-120vh) scale(1.4);opacity:0} }
+  .bubbles span:nth-child(1){ left:6%; width:60px;height:60px; animation-duration:12s; }
+  .bubbles span:nth-child(2){ left:20%; width:40px;height:40px; animation-duration:9s; }
+  .bubbles span:nth-child(3){ left:40%; width:30px;height:30px; animation-duration:7.5s; }
+  .bubbles span:nth-child(4){ left:60%; width:80px;height:80px; animation-duration:13s; }
+  .bubbles span:nth-child(5){ left:82%; width:36px;height:36px; animation-duration:10s; }
+
+  /* topbar (glass + pill) */
+  .topbar{ position:sticky; top:0; z-index:60; background: linear-gradient(180deg, rgba(2,10,14,0.6), rgba(2,10,14,0.18)); backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,0.01); }
+  .topbar-inner{ max-width: var(--page-max); margin:0 auto; display:flex; align-items:center; gap:18px; padding:12px 24px; justify-content:space-between; }
+  .logo-square{ width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;background:linear-gradient(180deg,#38efff,#0088ff); color:#02111a; box-shadow:0 10px 30px rgba(0,120,255,0.12); font-size:20px; }
+  .main-nav{ display:flex; gap:12px; align-items:center; margin-left:auto; }
+  .nav-item{ padding:10px 16px; border-radius:12px; color:var(--muted); text-decoration:none; font-weight:700; font-size:15px; transition:all .14s ease; background:transparent; }
+  .nav-item:hover{ background: rgba(255,255,255,0.03); color:var(--text); transform:translateY(-2px); box-shadow:0 12px 36px rgba(0,0,0,0.45); }
+  .nav-item.active{ background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); color:var(--text); box-shadow:0 18px 44px rgba(0,0,0,0.5), inset 0 -6px 12px rgba(0,110,255,0.03); }
+
+  /* container */
+  .contact-main{ max-width:1100px; margin:32px auto; padding:24px; padding-top:26px; }
+  .contact-inner{ display:grid; grid-template-columns: 1fr 380px; gap:22px; align-items:start; }
+  @media (max-width:980px){ .contact-inner{ grid-template-columns:1fr; } }
+
+  /* hero */
+  .hero-title{ font-size:44px; font-weight:900; margin:0 0 12px; color:var(--text); display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .hero-name{ font-size:44px; font-weight:900; background: linear-gradient(180deg,#e8f3ff,#c9e5ff 45%, #9dbfff 100%); -webkit-background-clip:text; color:transparent; text-shadow: 0 2px 0 rgba(255,255,255,0.9), 3px 3px 0 #cfe9ff, 6px 6px 0 #9bbfff, 9px 9px 0 #6a96ff; transform: translateY(6px) scale(.92); opacity:0; transition:all 420ms cubic-bezier(.2,.9,.2,1); }
+  .hero-name.pop{ transform:none; opacity:1; }
+
+  .lead{ color:var(--muted); margin-bottom:14px; max-width:70ch; }
+
+  /* left column: form */
+  .form-card{ padding:22px; border-radius:var(--card-radius); background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); box-shadow:0 16px 36px rgba(0,0,0,0.45); }
+  .form-row{ display:flex; gap:12px; flex-wrap:wrap; }
+  .form-row .col{ flex:1; min-width:160px; }
+  label{ display:block; font-weight:700; margin-bottom:6px; color:var(--text); font-size:14px; }
+  input[type="text"], input[type="email"], input[type="tel"], textarea, select{
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background: rgba(0,0,0,0.25); color:var(--text); outline:none;
+  }
+  textarea{ min-height:120px; resize:vertical; }
+  .field-note{ font-size:13px; color:var(--muted); margin-top:6px; }
+
+  .actions{ margin-top:12px; display:flex; gap:12px; align-items:center; }
+  .btn{ padding:10px 16px; border-radius:10px; font-weight:800; cursor:pointer; text-decoration:none; display:inline-block; border:none; }
+  .btn.primary{ background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:#02111a; box-shadow:0 14px 36px rgba(107,143,255,0.08); }
+  .btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); }
+
+  .msg{ margin-top:12px; padding:10px 14px; border-radius:10px; font-weight:700; display:none; }
+
+  /* right column: contact details boxes (FIXED) */
+  .info-col{ display:flex; flex-direction:column; gap:12px; }
+  .info-card{ padding:16px; border-radius:12px; background: rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.02); box-shadow:0 12px 30px rgba(0,0,0,0.45); }
+  .info-title{ font-weight:900; color:var(--text); margin-bottom:8px; }
+  .info-line{ color:var(--muted); margin-bottom:6px; }
+
+  /* make grid items equal height and center content */
+  .detail-grid{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap:10px;
+    margin-top:8px;
+    align-items:stretch;
+    align-content:start;
+  }
+  .detail-box{
+    padding:14px 12px;
+    border-radius:10px;
+    background: rgba(255,255,255,0.02);
+    text-align:center;
+    font-weight:800;
+    color:var(--muted);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    min-height:78px;
+    line-height:1.2;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+  .detail-box .title{ font-weight:900; color:var(--text); margin-bottom:6px; font-size:14px; }
+  .detail-box .value{ font-weight:800; color:var(--muted); font-size:15px; word-break: break-word; white-space: normal; }
+
+  .socials{ display:flex; gap:8px; margin-top:12px; }
+  .social{ width:44px; height:44px; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; background: rgba(255,255,255,0.02); color:var(--muted); font-weight:800; text-decoration:none; }
+
+  /* --- MAP & STATES: beautified list --- */
+  .map{
+    margin-top:10px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.012), rgba(255,255,255,0.01));
+    height:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.02);
+    padding:18px;
+  }
+
+  .map .states{
+    list-style:none;
+    padding:0;
+    margin:0;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center;
+  }
+
+  .map .states li{
+    width:90%;
+    max-width:360px;
+    text-align:center;
+    padding:14px 18px;
+    border-radius:12px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.006));
+    border: 1px solid rgba(255,255,255,0.02);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.45), inset 0 -4px 12px rgba(0,0,0,0.06);
+    cursor:default;
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    /* nice typography */
+    font-weight:900;
+    letter-spacing:1px;
+    font-size:18px;
+    color: linear-gradient(90deg, #fff, #dfeeff); /* fallback if gradient text not supported */
+    /* gradient text */
+    background-image: linear-gradient(90deg, #e8f3ff 0%, #9bbfff 60%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow:
+      0 2px 0 rgba(0,0,0,0.35),
+      0 18px 30px rgba(0,0,0,0.4);
+  }
+
+  .map .states li:hover{
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 28px 60px rgba(0,0,0,0.55);
+    background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.008));
+  }
+
+  /* small screens: slightly smaller pills */
+  @media (max-width:520px){
+    .map .states li{ width:100%; font-size:16px; padding:12px 14px; border-radius:10px; }
+    .detail-box{ min-height:64px; padding:12px; }
+    .social{ width:40px; height:40px; }
+  }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .bubbles span{ display:none !important; animation:none !important; }
+    .map .states li{ transition:none !important; transform:none !important; }
+  }
+  </style>
+</head>
+<body>
+  <!-- bubbles -->
+  <div class="bubbles" aria-hidden="true">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- topbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo-square">Y</div>
+
+      <nav class="main-nav" role="navigation" aria-label="Primary">
+        <a class="nav-item" href="index.html">Home</a>
+        <a class="nav-item" href="about.html">About</a>
+        <a class="nav-item" href="experience.html">Experience</a>
+        <a class="nav-item" href="projects.html">Projects</a>
+        <a class="nav-item" href="contact.html">Contact</a>
+        <a class="nav-item resume" href="resume.html">Resume</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- main -->
+  <main class="contact-main" role="main">
+    <div class="contact-inner">
+      <!-- left: form -->
+      <section>
+        <h1 class="hero-title">Get in touch <span id="hero-name" class="hero-name"></span></h1>
+        <p class="lead">Have a project, question or collaboration idea? Send a message — I usually reply within a couple of days.</p>
+
+        <form id="contactForm" class="form-card" novalidate>
+          <div class="form-row">
+            <div class="col">
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" placeholder="Your name" required>
+            </div>
+            <div class="col">
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+
+          <div style="margin-top:12px;">
+            <label for="subject">Subject</label>
+            <input id="subject" name="subject" type="text" placeholder="Brief subject" required>
+          </div>
+
+          <div style="margin-top:12px;">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" placeholder="Tell me about your project or question" required></textarea>
+            <div class="field-note">Please include links or references if any (GitHub, Figma, examples).</div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" class="btn primary">Send Message</button>
+            <button type="button" id="clearBtn" class="btn ghost">Clear</button>
+          </div>
+
+          <div id="formMsg" class="msg" role="status" aria-live="polite"></div>
+        </form>
+      </section>
+
+      <!-- right: contact boxes -->
+      <aside class="info-col">
+        <div class="info-card">
+          <div class="info-title">Essential</div>
+          <div class="info-line">Reach me directly via email or book a quick chat.</div>
+
+          <div class="detail-grid">
+            <div class="detail-box">
+              <div class="title">Email</div>
+              <div class="value">yuvrajanand9799@gmail.com</div>
+            </div>
+            <div class="detail-box">
+              <div class="title">Phone</div>
+              <div class="value">+91 • 9942467719</div>
+            </div>
+
+            <div class="detail-box">
+              <div class="title">Location</div>
+              <div class="value">India (Remote friendly)</div>
+            </div>
+            <div class="detail-box">
+              <div class="title">Availability</div>
+              <div class="value">Part-time / Freelance</div>
+            </div>
+          </div>
+
+          <div class="socials" aria-hidden="false" style="margin-top:12px;">
+            <a class="social" href="#" title="GitHub">gi</a>
+            <a class="social" href="#" title="LinkedIn">in</a>
+            <a class="social" href="#" title="Twitter">T</a>
+            <a class="social" href="#" title="Dribbble">D</a>
+          </div>
+
+        </div>
+
+        <div class="info-card">
+          <div class="info-title">Quick Links</div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
+            <a class="btn ghost" href="projects.html">See Projects</a>
+            <a class="btn ghost" href="resume.html">Download Resume</a>
+            <a class="btn ghost" href="mailto:yuvrajanand9799@gmail.com">Email Me</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-title">Location</div>
+
+          <!-- BEAUTIFIED STATES LIST -->
+          <div class="map">
+            <ul class="states" aria-hidden="false">
+              <li>PATNA</li>
+              <li>BHUBANESWAR</li>
+              <li>HYDERABAD</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer>© 2025 Yuvraj Anand</footer>
+
+  <!-- JS: nav active, name pop, form handling -->
+  <script>
+  (function(){
+    // set active nav by pathname
+    const path = location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.main-nav .nav-item').forEach(a=>{
+      const href = a.getAttribute('href');
+      if(!href) return;
+      if(href === path || (href === 'index.html' && path === '')) a.classList.add('active');
+      else a.classList.remove('active');
+    });
+
+    // name pop
+    const nameEl = document.getElementById('hero-name');
+    if(nameEl) setTimeout(()=> nameEl.classList.add('pop'), 650);
+
+    // form handling (client-side only)
+    const form = document.getElementById('contactForm');
+    const msg = document.getElementById('formMsg');
+    const clearBtn = document.getElementById('clearBtn');
+
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      msg.style.display = 'none';
+      // simple validation
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const subject = form.subject.value.trim();
+      const message = form.message.value.trim();
+      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if(!name || !email || !subject || !message){
+        showMsg('Please fill all fields.', 'error'); return;
+      }
+      if(!emailRe.test(email)){
+        showMsg('Please provide a valid email address.', 'error'); return;
+      }
+      // pretend send -> show success
+      showMsg('Thanks! Your message was sent (demo). I will respond via email.', 'success');
+      form.reset();
+    });
+
+    clearBtn.addEventListener('click', ()=> form.reset());
+
+    function showMsg(text, type){
+      msg.style.display = 'block';
+      msg.textContent = text;
+      if(type === 'success'){
+        msg.style.background = 'linear-gradient(90deg,var(--accent-a),var(--accent-b))';
+        msg.style.color = '#02111a';
+        msg.style.border = 'none';
+      } else {
+        msg.style.background = 'rgba(255,80,80,0.12)';
+        msg.style.color = '#fff';
+        msg.style.border = '1px solid rgba(255,80,80,0.15)';
+      }
+      setTimeout(()=> { msg.style.display = 'none'; }, 5000);
+    }
+  })();
+  </script>
+</body>
+</html>

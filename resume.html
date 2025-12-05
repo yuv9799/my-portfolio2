@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Resume — Yuvraj Anand</title>
+
+  <style>
+  /* ---------- theme variables (matches your site) ---------- */
+  :root{
+    --bg-top:#07151a; --bg-bottom:#072b30;
+    --page-max:1200px;
+    --card-bg: rgba(255,255,255,0.03);
+    --card-border: rgba(255,255,255,0.02);
+    --text:#e9f6fb;
+    --muted: rgba(233,246,251,0.6);
+    --accent-a:#cfe9ff; --accent-b:#9bbfff; --accent-c:#50d0ff;
+    --card-radius:14px; --gap:20px;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(800px 400px at 10% 10%, rgba(82,160,180,0.035), transparent 10%),
+      linear-gradient(180deg,var(--bg-top) 0%, var(--bg-bottom) 100%);
+    color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+    line-height:1.5; overflow-x:hidden; padding-bottom:48px;
+  }
+
+  /* bubbles background */
+  .bubbles{ position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden; }
+  .bubbles span{ position:absolute; bottom:-140px; border-radius:50%; background: radial-gradient(circle at 30% 30%, rgba(0,210,255,0.12), rgba(0,110,255,0.02)); box-shadow: 0 8px 40px rgba(6,100,120,0.06); opacity:.55; animation:rise linear infinite; will-change:transform,opacity; }
+  @keyframes rise{ 0%{transform:translateY(0) scale(.9);opacity:.5}70%{opacity:.25}100%{transform:translateY(-120vh) scale(1.4);opacity:0} }
+  .bubbles span:nth-child(1){ left:6%; width:60px;height:60px; animation-duration:12s; }
+  .bubbles span:nth-child(2){ left:20%; width:40px;height:40px; animation-duration:9s; }
+  .bubbles span:nth-child(3){ left:40%; width:30px;height:30px; animation-duration:7.5s; }
+  .bubbles span:nth-child(4){ left:60%; width:80px;height:80px; animation-duration:13s; }
+  .bubbles span:nth-child(5){ left:82%; width:36px;height:36px; animation-duration:10s; }
+
+  /* topbar: glass + pill nav */
+  .topbar{ position:sticky; top:0; z-index:60; background: linear-gradient(180deg, rgba(2,10,14,0.6), rgba(2,10,14,0.18)); backdrop-filter: blur(6px); border-bottom:1px solid rgba(255,255,255,0.01); }
+  .topbar-inner{ max-width: var(--page-max); margin:0 auto; display:flex; align-items:center; gap:18px; padding:12px 24px; justify-content:space-between; }
+  .logo-square{ width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;background:linear-gradient(180deg,#38efff,#0088ff); color:#02111a; box-shadow:0 10px 30px rgba(0,120,255,0.12); font-size:20px; }
+  .main-nav{ display:flex; gap:12px; align-items:center; margin-left:auto; }
+  .nav-item{ padding:10px 16px; border-radius:12px; color:var(--muted); text-decoration:none; font-weight:700; font-size:15px; transition:all .14s ease; background:transparent; }
+  .nav-item:hover{ background: rgba(255,255,255,0.03); color:var(--text); transform:translateY(-2px); box-shadow:0 12px 36px rgba(0,0,0,0.45); }
+  .nav-item.active{ background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); color:var(--text); box-shadow:0 18px 44px rgba(0,0,0,0.5), inset 0 -6px 12px rgba(0,110,255,0.03); }
+
+  @media (max-width:780px){
+    .topbar-inner{ padding:10px 14px; gap:12px; }
+    .nav-item{ padding:8px 10px; font-size:14px; }
+    .logo-square{ width:40px;height:40px; font-size:16px; }
+  }
+
+  /* main container */
+  .resume-main{ max-width:1100px; margin:32px auto; padding:24px; padding-top:28px; }
+  .resume-grid{ display:grid; grid-template-columns: 320px 1fr; gap:26px; align-items:start; }
+  @media (max-width:980px){ .resume-grid{ grid-template-columns: 1fr; } }
+
+  /* left column card */
+  .card{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:var(--card-radius); border:1px solid rgba(255,255,255,0.03); box-shadow: 0 16px 36px rgba(0,0,0,0.45); }
+  .profile-photo{ width:100%; height:200px; border-radius:12px; background: linear-gradient(180deg,#0e2a33,#0b1b22); display:flex; align-items:center; justify-content:center; color:var(--muted); font-weight:900; font-size:20px; margin-bottom:14px; }
+
+  .name-row{ display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px; }
+  .name { font-size:20px; font-weight:900; color:var(--text); }
+  .role { color:var(--muted); font-weight:700; font-size:13px; }
+
+  .small{ color:var(--muted); font-size:13px; }
+
+  .left-stack{ display:flex; flex-direction:column; gap:12px; }
+
+  /* skill bars in left column */
+  .skill-mini{ display:flex; flex-direction:column; gap:8px; }
+  .skill-mini .bar{ height:8px; background: rgba(255,255,255,0.02); border-radius:999px; overflow:hidden; }
+  .skill-mini .bar > span{ display:block; height:100%; background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); }
+
+  /* right column: main resume content */
+  .header{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:12px;
+  }
+  .headline{ font-size:28px; font-weight:900; margin:0; color:var(--text); display:flex; align-items:center; gap:12px; }
+  .headline .hero-name{
+    font-size:28px; font-weight:900;
+    background: linear-gradient(180deg,#e8f3ff,#c9e5ff 45%, #9dbfff 100%); -webkit-background-clip:text; color:transparent;
+    text-shadow: 0 2px 0 rgba(255,255,255,0.9), 3px 3px 0 #cfe9ff, 6px 6px 0 #9bbfff, 10px 10px 18px rgba(0,0,0,0.55);
+    transform: translateY(6px) scale(.92); opacity:0; transition:all 420ms cubic-bezier(.2,.9,.2,1);
+  }
+  .hero-name.pop{ transform:none; opacity:1; }
+
+  .cta-row{ display:flex; gap:10px; align-items:center; }
+  .btn{ padding:10px 14px; border-radius:10px; font-weight:800; text-decoration:none; display:inline-block; border:none; cursor:pointer; }
+  .btn.primary{ background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:#02111a; box-shadow:0 14px 36px rgba(107,143,255,0.08); }
+  .btn.ghost{ background:transparent; border:1px solid rgba(255,255,255,0.06); color:var(--muted); }
+
+  /* resume sections */
+  .section{ margin-bottom:18px; }
+  .section h3{ margin:0 0 10px 0; font-size:16px; color:var(--text); font-weight:900; }
+  .section p{ margin:0; color:var(--muted); font-size:14px; }
+
+  /* experience list */
+  .exp-list{ display:flex; flex-direction:column; gap:12px; }
+  .exp-item{ padding:12px; border-radius:10px; background: rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.02); }
+  .exp-item .meta{ display:flex; justify-content:space-between; gap:12px; align-items:flex-start; }
+  .exp-item .title{ font-weight:900; color:var(--text); }
+  .exp-item .date{ color:var(--muted); font-weight:700; font-size:13px; }
+
+  .bullets{ margin-top:8px; padding-left:18px; color:var(--muted); font-size:14px; }
+
+  /* education / small cards */
+  .two-grid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+  @media (max-width:780px){ .two-grid{ grid-template-columns:1fr; } }
+
+  /* skills / tags */
+  .tag-grid{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+  .tag{ padding:8px 12px; border-radius:999px; background: rgba(255,255,255,0.02); color:var(--muted); font-weight:800; font-size:13px; }
+
+  /* projects */
+  .proj{ padding:12px; border-radius:10px; background: rgba(255,255,255,0.015); border:1px solid rgba(255,255,255,0.02); margin-bottom:8px; }
+
+  /* footer small */
+  .print-note{ color:var(--muted); font-size:13px; }
+
+  /* responsive */
+  @media (max-width:980px){
+    .headline{ font-size:24px; }
+    .hero-name{ font-size:24px; }
+  }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .bubbles span{ display:none !important; animation:none !important; }
+    .hero-name{ transition:none!important; transform:none!important; opacity:1!important; }
+  }
+  </style>
+</head>
+<body>
+  <!-- bubbles -->
+  <div class="bubbles" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+  <!-- topbar -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="logo-square">Y</div>
+      <nav class="main-nav" role="navigation" aria-label="Primary">
+        <a class="nav-item" href="index.html">Home</a>
+        <a class="nav-item" href="about.html">About</a>
+        <a class="nav-item" href="experience.html">Experience</a>
+        <a class="nav-item" href="projects.html">Projects</a>
+        <a class="nav-item" href="contact.html">Contact</a>
+        <a class="nav-item active" href="resume.html">Resume</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- main resume container -->
+  <main class="resume-main" role="main">
+    <div class="resume-grid">
+      <!-- LEFT column -->
+      <aside class="card left-stack" aria-label="Profile and quick info">
+        <div class="profile-photo">Yuvraj Anand</div>
+
+        <div>
+          <div class="name-row">
+            <div>
+              <div class="name"></div>
+              <div class="role">Front-end Developer (Intermediate)</div>
+            </div>
+            <div class="small">© 2025</div>
+          </div>
+          <p class="small">I design and build performant, accessible front-end experiences using HTML, CSS and JavaScript. I care about pixel-perfect UI and smooth micro-interactions.</p>
+        </div>
+
+        <div class="section">
+          <h3>Contact</h3>
+          <p class="small">Email: <strong style="color:var(--accent-c);">yuvrajanand9799@gmail.com</strong></p>
+          <p class="small">Phone: <strong>+91 • 9942467719</strong></p>
+          <p class="small">Location: India (Remote friendly)</p>
+        </div>
+
+        <div class="section">
+          <h3>Quick Skills</h3>
+          <div class="skill-mini">
+            <div class="small">HTML / CSS</div><div class="bar"><span style="width:92%"></span></div>
+            <div class="small">JavaScript</div><div class="bar"><span style="width:80%"></span></div>
+            <div class="small">React (basic)</div><div class="bar"><span style="width:65%"></span></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Toolbox</h3>
+          <div class="tag-grid">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JS</span>
+            <span class="tag">React</span>
+            <span class="tag">Figma</span>
+            <span class="tag">Git</span>
+            <span class="tag">VSCode</span>
+            <span class="tag">DevTools</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Certifications</h3>
+          <div class="small">Responsive Web Design (self)</div>
+          <div class="small">JavaScript Fundamentals</div>
+          <div class="small">Intro to React</div>
+        </div>
+
+      </aside>
+
+      <!-- RIGHT column -->
+      <section>
+        <header class="header">
+          <h1 class="headline">Resume <span id="hero-name" class="hero-name"></span></h1>
+          <div class="cta-row">
+            <a class="btn primary" href="resume.pdf" download>Download PDF</a>
+            <a class="btn ghost" href="contact.html">Contact</a>
+          </div>
+        </header>
+
+        <div class="section">
+          <h3>Summary</h3>
+          <p class="small">Intermediate front-end developer with practical experience building responsive UIs, small single-page apps and interactive components. Comfortable with semantic HTML, CSS Grid/Flexbox, animations, and vanilla JS. Focused on accessibility, performance and clean UI.</p>
+        </div>
+
+        <div class="section">
+          <h3>Experience</h3>
+          <div class="exp-list">
+            <div class="exp-item">
+              <div class="meta">
+                <div class="title">Frontend Developer — Freelance</div>
+                <div class="date">2025 — Present</div>
+              </div>
+              <ul class="bullets">
+                <li>Built responsive landing pages and UI templates used for portfolio and client demos.</li>
+                <li>Implemented micro-interactions, form validation and lightbox galleries using vanilla JS.</li>
+                <li>Focused on cross-browser compatibility and performance optimizations.</li>
+              </ul>
+            </div>
+
+            <div class="exp-item">
+              <div class="meta">
+                <div class="title">UI Project Builder (Personal)</div>
+                <div class="date">2024 — 2025</div>
+              </div>
+              <ul class="bullets">
+                <li>Created 10+ mini projects: to-do app, calculator, stopwatch, photo gallery with lightbox.</li>
+                <li>Experimented with CSS animations, grid layouts and responsive patterns.</li>
+              </ul>
+            </div>
+
+            <div class="exp-item">
+              <div class="meta">
+                <div class="title">Intern / Learner</div>
+                <div class="date">2023 — 2024</div>
+              </div>
+              <ul class="bullets">
+                <li>Learned fundamentals of HTML/CSS and built first interactive JavaScript prototypes.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Selected Projects</h3>
+          <div class="proj">
+            <strong>Responsive E-commerce UI</strong>
+            <div class="small">Product cards, filters and clean layout with mobile-first approach.</div>
+          </div>
+          <div class="proj">
+            <strong>Photo Gallery with Lightbox</strong>
+            <div class="small">Clickable thumbnails with accessible lightbox preview and keyboard support.</div>
+          </div>
+          <div class="proj">
+            <strong>To-Do List App</strong>
+            <div class="small">Add/delete/mark complete with persistent localStorage state.</div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Education</h3>
+          <div class="two-grid">
+            <div class="card">
+              <div class="small"><strong>Diploma / Degree</strong></div>
+              <div class="small">Kalinga Institute Of Industrial Technology(KIIT) — (2024-2028)</div>
+            </div>
+            <div class="card">
+              <div class="small"><strong>Online Learning</strong></div>
+              <div class="small">Various web dev courses & practice projects</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Skills</h3>
+          <div class="tag-grid">
+            <span class="tag">HTML</span>
+            <span class="tag">CSS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">Responsive Design</span>
+            <span class="tag">Accessibility</span>
+            <span class="tag">CSS Animations</span>
+            <span class="tag">React (basic)</span>
+            <span class="tag">Debugging</span>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Learning Roadmap</h3>
+          <ul class="bullets">
+            <li>Advanced JavaScript (closures, event loop, prototypes)</li>
+            <li>React hooks, state management and component patterns</li>
+            <li>Performance optimization & Lighthouse auditing</li>
+            <li>Accessible forms, ARIA and keyboard navigation</li>
+          </ul>
+        </div>
+
+        <div class="section">
+          <h3>Want to chat?</h3>
+          <p class="small">Email me at <strong style="color:var(--accent-c)">yuvrajanand9799@gmail.com</strong> or use the <a class="btn ghost" href="contact.html">Contact page</a>.</p>
+        </div>
+
+        <p class="print-note small">Tip: click "Download PDF" to get a printable copy (placeholder).</p>
+      </section>
+    </div>
+  </main>
+
+  <footer style="text-align:center; margin:28px 0; color:rgba(234,246,251,0.6);">© 2025 Yuvraj Anand</footer>
+
+  <script>
+  (function(){
+    // make resume nav active if file name matches
+    const path = location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.main-nav .nav-item').forEach(a=>{
+      const href = a.getAttribute('href');
+      if(!href) return;
+      if(href === path || (href === 'resume.html')) a.classList.add('active');
+      else a.classList.remove('active');
+    });
+
+    // delayed 3D pop for the name
+    const name = document.getElementById('hero-name');
+    if(name) setTimeout(()=> name.classList.add('pop'), 650);
+
+    // add simple keyboard shortcut "D" to download pdf (optional)
+    document.addEventListener('keydown', (e)=>{
+      if(e.key.toLowerCase() === 'd' && !e.metaKey && !e.ctrlKey && !e.altKey){
+        const link = document.querySelector('a[download]');
+        if(link) link.click();
+      }
+    });
+  })();
+  </script>
+</body>
+</html>
